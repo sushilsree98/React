@@ -6,9 +6,9 @@ const App = () => {
 
   const [personState, setPeopleState] = useState({
     person:[
-      { age: 5 },
-      { age: 21 },
-      { age: 29 }
+      { id:'123A', age: 5 },
+      { id:'456B', age: 21 },
+      { id:'789C', age: 29 }
     ],
 
     others: "Some other value"
@@ -16,25 +16,100 @@ const App = () => {
   })
   
   console.log(personState)
-  const onSwitchHandler = () => {
+  const onSwitchHandler = (name) => {
     setPeopleState({
           person:[
-        { age: 25 },
-        { age: 21 },
-        { age: 39 }
+        {id:'123A', age: name },
+        {id:'456B', age: 21 },
+        {id:'789C', age: 39 }
       ],
-      others: "Some other value"  
+      others: "Some other value",
+      showPerson: false  
     })
     console.log(personState)
+  }
+
+  const onChangeHandler = (event) =>{
+    setPeopleState({
+          person:[
+        { id:'123A', age: 40 },
+        { id:'456B', age: event.target.value },
+        { id:'789C', age: 39 }
+      ],
+      others: "Some other value",
+      showPerson: true  
+    })
+  }
+
+  const deletePersonHandler = (index) => {
+    const personArray = personState.person.slice();
+    personArray.splice(index, 1)
+    setPeopleState({
+      person: personArray,
+      others: "Some other value",
+      showPerson: true  
+    })
+  }
+
+  const buttonStyle = {
+    font: 'inherit',
+    padding: '3px 12px',
+    cursor: 'pointer',
+    backgroundColor: '#fff',
+    border:'1px solid blue'
+  }
+
+  const onPersonChanged = (event, id) => {
+    const personIndex = personState.person.findIndex((p)=>{
+      return p.id == id
+    })
+
+    const person = {
+      ...personState.person[personIndex]
+    }
+
+    person.age = event.target.value;
+
+    const persons = [...personState.person]
+    persons[personIndex] = person
+
+    setPeopleState({
+      person : persons,
+      others: "Some other value",
+      showPerson: true  
+    })
+  }
+
+  const onToggleHandler = () =>{
+    let flag = personState.showPerson;
+    setPeopleState({
+      person:[
+        {id:'123A', age: 40 },
+        {id:'456B', age: 20 },
+        {id:'789C', age: 39 }
+      ],
+      others: "Some other value",
+      showPerson : !flag
+    })
+  }
+  let person = null
+  if(personState.showPerson){
+    person = (<div>
+      {
+        personState.person.map((person, index)=>{
+          return (
+            <Person click={() => deletePersonHandler(index)} age={person.age} key={person.id} changed={(event) => onPersonChanged(event, person.id)}/>
+          )
+        })
+      }
+    </div>)
   }
    
   return (
       <div className="App">
           <h1>My First React App</h1>
-          <button onClick={onSwitchHandler}>Switch Name</button>
-          <Person age={personState.person[0].age}/>
-          <Person age={personState.person[1].age}>Hello there!</Person>
-          <Person age={personState.person[2].age}/>
+          <button style={buttonStyle} onClick={onToggleHandler}>Toggle Person</button>
+          {person}   
       </div>
     );
 }
