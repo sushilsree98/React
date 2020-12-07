@@ -1,6 +1,21 @@
 import  React, {useState}  from 'react';
 import Person from './Person/person'
+import styled from 'styled-components'
 import './App.css';
+
+const StyledButton = styled.button`
+    font: inherit;
+    padding: 3px 12px;
+    cursor: pointer;
+    color: ${props => props.alt ? 'red' : 'green'};
+    background-color: #fff;
+    border:1px solid blue;
+    
+    &:hover {
+      background-color : black;
+      color: ${props => props.alt ? 'salmon' : 'lightgreen'}
+    }
+`;
 
 const App = () => {
 
@@ -51,12 +66,17 @@ const App = () => {
     })
   }
 
-  const buttonStyle = {
+  let buttonStyle = {
     font: 'inherit',
     padding: '3px 12px',
     cursor: 'pointer',
+    color: 'green',
     backgroundColor: '#fff',
-    border:'1px solid blue'
+    border:'1px solid blue',
+    ':hover':{
+      backgroundColor : 'black',
+      color: 'lightgreen'
+    }
   }
 
   const onPersonChanged = (event, id) => {
@@ -99,16 +119,31 @@ const App = () => {
         personState.person.map((person, index)=>{
           return (
             <Person click={() => deletePersonHandler(index)} age={person.age} key={person.id} changed={(event) => onPersonChanged(event, person.id)}/>
-          )
-        })
-      }
+            )
+          })
+        }
     </div>)
+    buttonStyle.color = 'red'
+    buttonStyle[':hover']={
+      backgroundColor : 'black',
+      color: 'salmon'
+    }
+  }
+
+  const classes = [];
+
+  if(personState.person.length <=2) {
+    classes.push('red')
+  }
+  if(personState.person.length <=1) {
+    classes.push('bold')
   }
    
   return (
       <div className="App">
           <h1>My First React App</h1>
-          <button style={buttonStyle} onClick={onToggleHandler}>Toggle Person</button>
+          <p className={classes.join(" ")}>This works !</p>
+          <StyledButton alt={personState.showPerson} onClick={onToggleHandler}>Toggle Person</StyledButton>
           {person}   
       </div>
     );
