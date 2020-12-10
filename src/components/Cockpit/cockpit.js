@@ -1,5 +1,6 @@
-import { React } from 'react'
+import { React, useEffect } from 'react'
 import styled from 'styled-components'
+import Aux from '../hoc/Auxiliary'
 
 const StyledButton = styled.button`
     font: inherit;
@@ -15,7 +16,10 @@ const StyledButton = styled.button`
     }
 `;
 
-const cockpit = (props) => {
+const Cockpit = (props) => {
+  useEffect(() => {
+    
+  })
   let buttonStyle = {
     font: 'inherit',
     padding: '3px 12px',
@@ -45,12 +49,12 @@ const cockpit = (props) => {
   }
 
     return (
-    <div>
+    <Aux>
         <h1>My First React App</h1>
         <p className={classes.join(" ")}>This works !</p>
         <StyledButton alt={props.show} onClick={props.toggle}>Toggle Person</StyledButton>
-    </div>
+    </Aux>
     )
 }
 
-export default cockpit
+export default Cockpit
