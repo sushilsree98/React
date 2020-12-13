@@ -1,5 +1,6 @@
 import { React, Component } from 'react';
-import  styled  from 'styled-components'
+import  styled  from 'styled-components';
+import PropTypes  from 'prop-types';
 // import './person.css';
 
 const StyledDiv = styled.div`
@@ -18,17 +19,25 @@ const StyledDiv = styled.div`
 
     `;
 class Person extends Component  {
-
+    componentDidMount(){
+        this.inputElement.focus();
+    }
     render(){
         return(
         <StyledDiv>
             <p onClick={this.props.click}>I'm {this.props.age} years old</p>
             <p>{this.props.children}</p>
-            <input type='text' onChange={this.props.changed} value={this.props.age}></input>
+            <input type='text' ref={(ele)=>{this.inputElement = ele}} onChange={this.props.changed} value={this.props.age}></input>
         </StyledDiv>
         )
     } 
     
+}
+
+Person.propTypes = {
+    click: PropTypes.func,
+    age: PropTypes.number,
+    changed: PropTypes.func,
 }
 
 export default Person
